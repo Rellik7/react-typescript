@@ -1,11 +1,12 @@
-import React, { Component } from 'react'
-import Botao from '../Botao'
+import React from 'react';
+import Botao from '../Botao';
+import './style.scss';
 
-export default class Formulario extends Component {
+export default class Formulario extends React.Component {
   render() {
     return (
-      <form>
-        <div>
+      <form className='novaTarefa'>
+        <div className='inputContainer'>
           <label htmlFor='tarefa'>
             Adicione um novo estudo
           </label>
@@ -17,7 +18,7 @@ export default class Formulario extends Component {
             required
           />
         </div>
-        <div>
+        <div className='inputContainer'>
           <label htmlFor='tempo'>
             Tempo
           </label>
@@ -35,4 +36,4 @@ export default class Formulario extends Component {
       </form>
     )
   }
-}
+};
