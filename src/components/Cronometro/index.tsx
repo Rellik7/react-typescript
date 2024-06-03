@@ -2,30 +2,32 @@ import Botao from '../Botao';
 import Relogio from './Relogio';
 import style from './Cronometro.module.scss';
 import { ITarefa } from '../../types/ITarefa';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { tempoParaSegundos } from '../../common/utils/time';
 
 interface Props {
   selecionado: ITarefa | undefined,
-  finalizarTarefa: () => void
+  atualizarTarefa: (tempoRestante: number) => void
 };
 
-export default function Cronometro({ selecionado, finalizarTarefa }: Props) {
+export default function Cronometro({ selecionado, atualizarTarefa }: Props) {
   const [tempo, setTempo] = useState<number>();
+  const pause = useRef(false)
 
   useEffect(() => {
-    if (selecionado?.tempo) {
-      setTempo(tempoParaSegundos(selecionado.tempo));
+    if (selecionado?.tempoRestante) {
+      setTempo(tempoParaSegundos(selecionado.tempoRestante));
     };
   }, [selecionado]);
 
   function regressiva(contador: number = 0) {
     setTimeout(() => {
-      if(contador > 0) {
+      if(contador > 0 && !pause.current) {
         setTempo(contador - 1);
         return regressiva(contador - 1);
       };
-      finalizarTarefa();
+      atualizarTarefa(contador);
+      pause.current = !pause
     }, 1000);
   };
 
@@ -35,9 +37,14 @@ export default function Cronometro({ selecionado, finalizarTarefa }: Props) {
       <div className={style.relogioWrapper}>
         <Relogio tempo={tempo} />
       </div>
-      <Botao onCLick={() => regressiva(tempo)}>
-        Começar!
-      </Botao>
+      <div>
+        <Botao onCLick={() => regressiva(tempo)}>
+          Iniciar
+        </Botao>
+        <Botao onCLick={() => { pause.current = true }}>
+          Pausar
+        </Botao>
+      </div>
     </div>
   );
 };

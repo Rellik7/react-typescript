@@ -4,18 +4,18 @@ import { ITarefa } from '../../types/ITarefa';
 
 interface Props {
   tarefas: ITarefa[],
-  selecionaTarefa: (tarefaSelecionada: ITarefa) => void
+  selecionarTarefa: (tarefaSelecionada: ITarefa) => void
 }
 
 
-export default function Lista({ tarefas, selecionaTarefa }: Props ) {
+export default function Lista({ tarefas, selecionarTarefa }: Props ) {
   return (
     <aside className={style.listaTarefas}>
-      <h2> Estudos do dia</h2>
+      <h2> Tarefas do dia</h2>
       <ul>
         {tarefas.map((item) => (
           <Item
-            selecionaTarefa={selecionaTarefa}
+            selecionarTarefa={selecionarTarefa}
             key={item.id}
             {...item}
           />
